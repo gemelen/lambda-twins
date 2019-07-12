@@ -1,16 +1,15 @@
 package net.gemelen.spark.core
 
-import zio.{App, ZIO}
+import org.apache.spark.sql.SparkSession
+import zio.{App, Task, ZIO}
 
 abstract class SparkApplication extends zio.App {
 
   def sparkApp: ZIO[Environment, Nothing, Int]
 
-  override val Environment = SparkEnvironment
-
   import SparkApplication._
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
-    sparkApp.provide(Environment).fold(
+    sparkApp.fold(
       error => ErrorReturnCode,
       success => SuccessReturnCode
     )

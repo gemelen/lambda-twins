@@ -39,6 +39,10 @@ lazy val batch = project
   .settings(
     name := "batch",
     libraryDependencies ++=
+      Seq(
+        zio
+      ) ++
+      spark ++
       logging
   )
 
