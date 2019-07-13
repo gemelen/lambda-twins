@@ -8,6 +8,6 @@ trait SparkRuntime extends Runtime[Logger] {
   type SparkEnvironment = Logger
 
   val Platform: Platform = PlatformLive.Default
-  val Env: SparkEnvironment = Logger.Live
+  val Environment: SparkEnvironment = Logger.Live
 }
 

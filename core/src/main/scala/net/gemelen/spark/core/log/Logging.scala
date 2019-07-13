@@ -8,6 +8,8 @@ trait Logger extends Serializable {
 
 object Logger extends Serializable {
   trait Service[R] {
+    def log(level: String, message: String): ZIO[R, Nothing, Unit]
+
     def info(message: String): ZIO[R, Nothing, Unit]
     def warn(message: String): ZIO[R, Nothing, Unit]
     def error(message: String): ZIO[R, Nothing, Unit]
@@ -15,9 +17,11 @@ object Logger extends Serializable {
 
   trait Live extends Logger {
     val logger: Service[Any] = new Service[Any] {
-      final def info(message: String): UIO[Unit] = IO.effectTotal(Console.println("info: " + message))
-      final def warn(message: String): UIO[Unit] = IO.effectTotal(Console.println("warn: " + message))
-      final def error(message: String): UIO[Unit] = IO.effectTotal(Console.println("error: " + message))
+      final def log(level: String, message: String): UIO[Unit] = IO.effectTotal(Console.println(s"[$level]: $message"))
+
+      final def info(message: String): UIO[Unit] = log("info", message)
+      final def warn(message: String): UIO[Unit] = log("warn", message)
+      final def error(message: String): UIO[Unit] = log("error", message)
     }
   }
 
