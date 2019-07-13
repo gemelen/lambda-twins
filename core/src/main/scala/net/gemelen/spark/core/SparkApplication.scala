@@ -1,18 +1,22 @@
 package net.gemelen.spark.core
 
+import net.gemelen.spark.core.log.Logger
+import net.gemelen.spark.core.log.Logger._
 import org.apache.spark.sql.SparkSession
-import zio.{App, Task, ZIO}
+import zio.{App, ZIO}
 
 abstract class SparkApplication extends zio.App {
 
-  def sparkApp: ZIO[Environment, Nothing, Int]
+  def sparkApp: ZIO[Logger, Nothing, Int]
 
   import SparkApplication._
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
-    sparkApp.fold(
-      error => ErrorReturnCode,
-      success => SuccessReturnCode
-    )
+    sparkApp
+      .provide(Live)
+      .fold(
+        error => ErrorReturnCode,
+        success => SuccessReturnCode
+      )
 
 }
 

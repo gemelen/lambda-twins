@@ -1,10 +1,10 @@
 package net.gemelen.spark.batch
 
 import net.gemelen.spark.core.SparkApplication
+import net.gemelen.spark.core.log.Logger
+import net.gemelen.spark.core.log.Logger._
 import org.apache.spark.sql.SparkSession
-import zio.{Task, ZIO}
-import zio._
-import zio.console._
+import zio.ZIO
 
 object AppContext {
   
@@ -17,11 +17,11 @@ object AppContext {
         .getOrCreate()
     )
 
-    override def sparkApp: ZIO[Environment, Nothing, Int] = {
+    override def sparkApp: ZIO[Logger, Nothing, Int] = {
       for {
-        _ <- putStrLn("start")
+        _ <- Live.logger.info("start")
         _ <- s.map(_.close())
-        _ <- putStrLn("end")
+        _ <- Live.logger.info("end")
       } yield ( 0 )
     }
 
