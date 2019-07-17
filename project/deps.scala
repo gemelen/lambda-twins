@@ -31,6 +31,7 @@ object deps {
   val sparkModules = Seq(yarn, hive, sql, sqlKafka, streaming, streamingKafka)
 
   val spark = sparkEssentials ++ sparkModules
-  val logging = Seq(scalaLogging, loggingBackend)
+  val loggingFacade = scalaLogging
+  val loggingFacility = Seq(scalaLogging, loggingBackend)
 }
 

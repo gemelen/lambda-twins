@@ -1,25 +1,30 @@
 package net.gemelen.spark.core
 
 import org.apache.spark.sql.SparkSession
-import zio.{App, Task, ZIO}
+import zio.{App, ZIO}
 
 abstract class SparkApplication extends zio.App {
 
-  def sparkApp: ZIO[Environment, Nothing, Int]
+  def sparkApp: ZIO[Any, Nothing, Int]
 
-  import SparkApplication._
+  import SparkApplication.ExitCode._
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
-    sparkApp.fold(
-      error => ErrorReturnCode,
-      success => SuccessReturnCode
-    )
+    sparkApp
+      .fold( _ => Error.code, _ => Success.code )
 
 }
 
 object SparkApplication {
 
-  val SuccessReturnCode = 0
-  val ErrorReturnCode = 1
+  sealed trait ExitCode
+  object ExitCode {
+    final case object Success extends ExitCode {
+      val code: Int = 0
+    }
+    final case object Error extends ExitCode {
+      val code: Int = 1
+    }
+  }
 
 }
 

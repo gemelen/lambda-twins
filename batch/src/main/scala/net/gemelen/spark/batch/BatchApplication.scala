@@ -1,32 +1,37 @@
 package net.gemelen.spark.batch
 
+import net.gemelen.spark.core.log.LazyLogging
 import net.gemelen.spark.core.SparkApplication
 import org.apache.spark.sql.SparkSession
-import zio.{Task, ZIO}
-import zio._
-import zio.console._
+import zio.ZIO
 
 object AppContext {
   
-  class BatchApplication extends SparkApplication {
+  class BatchApplication extends SparkApplication with LazyLogging {
 
-    def s: ZIO[Any, Nothing, SparkSession] = ZIO.succeed(
+    lazy val session: ZIO[Any, Nothing, SparkSession] = ZIO.succeed(
       SparkSession
         .builder()
         .master("local")
         .getOrCreate()
     )
 
-    override def sparkApp: ZIO[Environment, Nothing, Int] = {
+    override def sparkApp: ZIO[Any, Nothing, Int] = {
+
       for {
-        _ <- putStrLn("start")
-        _ <- s.map(_.close())
-        _ <- putStrLn("end")
-      } yield ( 0 )
+        _ <- logger.info("start")
+        count <- session.map { s =>
+          s.range(1, 100).count()
+        }
+        _ <- session.map(_.close)
+        _ <- logger.error("error!", new Exception("exception message"))
+        _ <- logger.info("end")
+        _ <- logger.warn(s"count: $count")
+      } yield ( SparkApplication.ExitCode.Success.code )
     }
 
   }
 }
 
-
 object BatchApplication extends AppContext.BatchApplication
+
