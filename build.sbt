@@ -24,7 +24,7 @@ lazy val core = project
     name := "core",
     libraryDependencies ++=
       Seq(
-        scalaLogging,
+        loggingFacade,
         typesafeConfig,
         zio
       ) ++
@@ -43,7 +43,7 @@ lazy val batch = project
         zio
       ) ++
       spark ++
-      logging
+      loggingFacility
   )
 
 lazy val streaming = project
@@ -54,6 +54,6 @@ lazy val streaming = project
   .settings(
     name := "streaming",
     libraryDependencies ++=
-      logging
+      loggingFacility
   )
 

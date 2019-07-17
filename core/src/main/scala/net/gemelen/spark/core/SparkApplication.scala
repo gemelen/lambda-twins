@@ -5,24 +5,26 @@ import zio.{App, ZIO}
 
 abstract class SparkApplication extends zio.App {
 
-  val sparkRuntime = new SparkRuntime {}
-  def sparkApp: ZIO[SparkRuntime, Nothing, Int]
+  def sparkApp: ZIO[Any, Nothing, Int]
 
-  import SparkApplication._
+  import SparkApplication.ExitCode._
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
     sparkApp
-      .provide(sparkRuntime)
-      .fold(
-        error => ErrorReturnCode,
-        success => SuccessReturnCode
-      )
+      .fold( _ => Error.code, _ => Success.code )
 
 }
 
 object SparkApplication {
 
-  val SuccessReturnCode = 0
-  val ErrorReturnCode = 1
+  sealed trait ExitCode
+  object ExitCode {
+    final case object Success extends ExitCode {
+      val code: Int = 0
+    }
+    final case object Error extends ExitCode {
+      val code: Int = 1
+    }
+  }
 
 }
 
