@@ -1,12 +1,44 @@
 package net.gemelen.spark.batch
 
+import net.gemelen.spark.core.consul.ConsulClient
 import net.gemelen.spark.core.log.LazyLogging
 import net.gemelen.spark.core.SparkApplication
 import org.apache.spark.sql.SparkSession
-import zio.ZIO
+import com.typesafe.config.{Config, ConfigFactory, ConfigValueFactory}
+import zio.{Task, ZIO}
 
-object AppContext {
-  
+object AppContext extends ConsulClient {
+
+  /*
+  * Application config from resource "application.conf"
+  * with injected values from environment.
+  */
+  lazy val mainConfig: Task[Config] = Task.effect(
+    ConfigFactory
+      .load()
+      .withFallback(ConfigFactory.systemEnvironment())
+      .withValue("environment", ConfigValueFactory.fromAnyRef(sys.env("ENVIRONMENT")))
+  )
+
+  /*
+  * Application config from Consul.
+  */
+  lazy val consulConfig: Task[Config] = mainConfig.flatMap { conf =>
+    val consulHost: String = conf.getString("consul.host")
+    val consulPath: String = conf.getString("consul.path")
+
+    externalConfig(host = consulHost, path = consulPath)
+  }
+
+  /*
+  * Merged configuration from all sources.
+  */
+  lazy val config: Task[Config] =
+    for {
+      mc <- mainConfig
+      cc <- consulConfig
+    } yield ( mc.withFallback(cc) )
+
   class BatchApplication extends SparkApplication with LazyLogging {
 
     lazy val session: ZIO[Any, Nothing, SparkSession] = ZIO.succeed(
