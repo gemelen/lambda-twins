@@ -28,7 +28,9 @@ lazy val core = project
         typesafeConfig,
         zio
       ) ++
-      spark
+      consul ++
+      spark ++
+      jackson
   )
 
 lazy val batch = project
@@ -40,6 +42,7 @@ lazy val batch = project
     name := "batch",
     libraryDependencies ++=
       Seq(
+        typesafeConfig,
         zio
       ) ++
       spark ++
