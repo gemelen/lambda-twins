@@ -17,7 +17,6 @@ object AppContext extends ConsulClient {
     ConfigFactory
       .load()
       .withFallback(ConfigFactory.systemEnvironment())
-      .withValue("environment", ConfigValueFactory.fromAnyRef(sys.env("ENVIRONMENT")))
   )
 
   /*
@@ -41,25 +40,27 @@ object AppContext extends ConsulClient {
 
   class BatchApplication extends SparkApplication with LazyLogging {
 
-    lazy val session: ZIO[Any, Nothing, SparkSession] = ZIO.succeed(
-      SparkSession
-        .builder()
-        .master("local")
-        .getOrCreate()
-    )
+    lazy val session: Task[SparkSession] = mainConfig.flatMap { conf =>
+      ZIO.effect(
+        SparkSession
+          .builder()
+          .master("local[4]")
+          .appName(conf.getString("application.name"))
+          .getOrCreate()
+        )
+    }
 
     override def sparkApp: ZIO[Any, Nothing, Int] = {
 
       for {
         _ <- logger.info("start")
-        count <- session.map { s =>
-          s.range(1, 100).count()
-        }
-        _ <- session.map(_.close)
+        count <- session.map { _.range(1, 100).count() } <> ZIO.succeed(0L)
+        _ <- session.map(_.close) <> ZIO.succeed( SparkApplication.ExitCode.Error.code )
         _ <- logger.error("error!", new Exception("exception message"))
         _ <- logger.info("end")
         _ <- logger.warn(s"count: $count")
-      } yield ( SparkApplication.ExitCode.Success.code )
+      } yield ( SparkApplication.ExitCode.Success.code ) 
+
     }
 
   }
