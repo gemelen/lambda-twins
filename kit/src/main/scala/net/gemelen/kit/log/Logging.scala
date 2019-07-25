@@ -1,4 +1,4 @@
-package net.gemelen.spark.core.log
+package net.gemelen.kit.log
 
 import com.typesafe.scalalogging.{Logger => OriginalLogger}
 import org.slf4j.{LoggerFactory, Marker}
