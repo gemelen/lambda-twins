@@ -27,11 +27,8 @@ lazy val core = project
     name := "core",
     libraryDependencies ++=
       Seq(
-        loggingFacade,
-        typesafeConfig,
         zio
       ) ++
-      consul ++
       spark ++
       jackson
   )
