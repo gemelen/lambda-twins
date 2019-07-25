@@ -1,7 +1,7 @@
 package net.gemelen.spark.batch
 
-import net.gemelen.spark.core.consul.ConsulClient
-import net.gemelen.spark.core.log.LazyLogging
+import net.gemelen.kit.consul.ConsulClient
+import net.gemelen.kit.log.LazyLogging
 import net.gemelen.spark.core.SparkApplication
 import org.apache.spark.sql.SparkSession
 import com.typesafe.config.{Config, ConfigFactory, ConfigValueFactory}

@@ -1,4 +1,4 @@
-package net.gemelen.spark.core.consul
+package net.gemelen.kit.consul
 
 import com.google.common.net.HostAndPort
 import com.orbitz.consul.Consul

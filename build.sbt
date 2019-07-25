@@ -13,33 +13,45 @@ lazy val root = project
   .settings(
   )
   .aggregate(
-    core,
+    kit,
     processing,
+    core,
     batch,
     streaming
   )
 
 lazy val core = project
   .in(file("core"))
-  .enablePlugins()
+  .dependsOn(kit)
   .settings(
     name := "core",
+    libraryDependencies ++=
+      Seq(
+        zio
+      ) ++
+      spark ++
+      jackson
+  )
+
+// Collection of external functionality,
+// wrapped with ZIO.
+lazy val kit = project
+  .in(file("kit"))
+  .settings(
+    name := "kit",
     libraryDependencies ++=
       Seq(
         loggingFacade,
         typesafeConfig,
         zio
       ) ++
-      consul ++
-      spark ++
-      jackson
+      consul
   )
 
 // Data processing api.
 // Externalize into separate lib in a real project.
 lazy val processing = project
   .in(file("processing"))
-  .enablePlugins()
   .settings(
     name := "processing",
     libraryDependencies ++=
