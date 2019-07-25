@@ -1,17 +1,14 @@
+import compiler._
 import deps._
 
 ThisBuild / scalaVersion := "2.12.8"
 ThisBuild / version := "0.1"
 ThisBuild / turbo := true
-
-resolvers += Resolver.sonatypeRepo("snapshots")
-scalacOptions += "-Ypartial-unification"
+ThisBuild / scalacOptions := CompilerOpts.scalacFlags
 
 lazy val root = project
   .in(file("."))
   .enablePlugins(RootProjectPlugin)
-  .settings(
-  )
   .aggregate(
     kit,
     processing,
@@ -25,6 +22,7 @@ lazy val core = project
   .dependsOn(kit)
   .settings(
     name := "core",
+    scalacOptions -= "-Ywarn-dead-code",
     libraryDependencies ++=
       Seq(
         zio

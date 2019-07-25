@@ -10,7 +10,7 @@ abstract class SparkApplication extends zio.App {
   import SparkApplication.ExitCode._
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
     sparkApp
-      .fold( _ => Error.code, _ => Success.code )
+    .fold( _ => Error.code , _ => Success.code )
 
 }
 
