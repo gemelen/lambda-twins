@@ -5,6 +5,7 @@ ThisBuild / version := "0.1"
 ThisBuild / turbo := true
 
 resolvers += Resolver.sonatypeRepo("snapshots")
+scalacOptions += "-Ypartial-unification"
 
 lazy val root = project
   .in(file("."))
@@ -13,6 +14,7 @@ lazy val root = project
   )
   .aggregate(
     core,
+    processing,
     batch,
     streaming
   )
@@ -33,10 +35,23 @@ lazy val core = project
       jackson
   )
 
+// Data processing api.
+// Externalize into separate lib in a real project.
+lazy val processing = project
+  .in(file("processing"))
+  .enablePlugins()
+  .settings(
+    name := "processing",
+    libraryDependencies ++=
+      Seq(
+        loggingFacade
+      ) ++
+      cats
+  )
+
+// Spark batch processing application
 lazy val batch = project
   .in(file("batch"))
-  .enablePlugins(
-  )
   .dependsOn(core)
   .settings(
     name := "batch",
@@ -49,10 +64,9 @@ lazy val batch = project
       loggingFacility
   )
 
+// Spark Streaming processing application
 lazy val streaming = project
   .in(file("streaming"))
-  .enablePlugins(
-  )
   .dependsOn(core)
   .settings(
     name := "streaming",
