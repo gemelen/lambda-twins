@@ -3,7 +3,7 @@ package net.gemelen.spark.core.types
 object Types {
 
   import org.apache.avro.generic.GenericRecord
-  import net.gemelen.data.processing.api.ProcessingError
+  import net.gemelen.data.processing.api.errors.ProcessingError
 
   type Grain = Either[ProcessingError, GenericRecord]
 
