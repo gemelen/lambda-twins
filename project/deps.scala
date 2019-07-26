@@ -30,6 +30,7 @@ object deps {
   val typesafeConfig          = "com.typesafe"                      %  "config"                        % "1.3.4"
   val consulClient            = "com.orbitz.consul"                 %  "consul-client"                 % "1.3.6"
   val guava                   = "com.google.guava"                  %  "guava"                         % v.guava % Compile
+  val avro                    = "org.apache.avro"                   %  "avro"                          % "1.9.0"
   // cats
   val catsCore                = "org.typelevel"                     %% "cats-core"                     % v.cats
   // jackson

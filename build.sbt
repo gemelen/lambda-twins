@@ -20,11 +20,13 @@ lazy val root = project
 lazy val core = project
   .in(file("core"))
   .dependsOn(kit)
+  .dependsOn(processing)
   .settings(
     name := "core",
     scalacOptions -= "-Ywarn-dead-code",
     libraryDependencies ++=
       Seq(
+        avro,
         zio
       ) ++
       spark ++
