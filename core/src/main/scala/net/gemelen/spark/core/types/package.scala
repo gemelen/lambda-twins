@@ -5,7 +5,7 @@ object Types {
   import org.apache.avro.generic.GenericRecord
   import net.gemelen.data.processing.api.ProcessingError
 
-  type Data = Either[ProcessingError, GenericRecord]
+  type Grain = Either[ProcessingError, GenericRecord]
 
   type BatchId = Long
 
@@ -17,7 +17,7 @@ package rdd {
   import org.apache.spark.rdd.RDD
 
   object Types {
-    type DataRDD = RDD[Data]
+    type Batch = RDD[Grain]
   }
 }
 
@@ -27,7 +27,7 @@ package dataset {
   import org.apache.spark.sql.Dataset
 
   object Types {
-    type DataDS = Dataset[Data]
+    type Batch = Dataset[Grain]
   }
 }
 
