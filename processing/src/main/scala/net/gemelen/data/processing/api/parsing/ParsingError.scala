@@ -1,8 +1,6 @@
 package net.gemelen.data.processing.api.parsing
 
-sealed trait ParsingError {
+import net.gemelen.data.processing.api.ProcessingError
 
-  def message(details: String): String
-
-}
+sealed trait ParsingError extends ProcessingError
 

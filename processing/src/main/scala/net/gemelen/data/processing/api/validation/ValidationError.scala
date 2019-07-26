@@ -1,8 +1,6 @@
 package net.gemelen.data.processing.api.validation
 
-sealed trait ValidationError {
+import net.gemelen.data.processing.api.ProcessingError
 
-  def message(details: String): String
-
-}
+sealed trait ValidationError extends ProcessingError
 

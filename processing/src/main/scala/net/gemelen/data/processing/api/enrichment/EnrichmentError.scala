@@ -1,8 +1,6 @@
 package net.gemelen.data.processing.api.enrichment
 
-sealed trait EnrichmentError {
+import net.gemelen.data.processing.api.ProcessingError
 
-  def message(details: String): String
-
-}
+sealed trait EnrichmentError extends ProcessingError
 
