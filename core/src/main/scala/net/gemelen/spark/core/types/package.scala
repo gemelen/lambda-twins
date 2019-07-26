@@ -7,6 +7,8 @@ object Types {
 
   type Data = Either[ProcessingError, GenericRecord]
 
+  type BatchId = Long
+
 }
 
 package rdd {
