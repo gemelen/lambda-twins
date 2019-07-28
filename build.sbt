@@ -41,6 +41,7 @@ lazy val kit = project
     name := "kit",
     libraryDependencies ++=
       Seq(
+        kafka,
         loggingFacade,
         typesafeConfig,
         zio
