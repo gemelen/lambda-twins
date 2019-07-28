@@ -7,6 +7,7 @@ object v {
   val cats      = "2.0.0-M1"
   val guava     = "27.1-jre"
   val jackson   = "2.9.9"
+  val kafka     = "2.3.0"
 }
 
 object deps {
@@ -31,6 +32,7 @@ object deps {
   val consulClient            = "com.orbitz.consul"                 %  "consul-client"                 % "1.3.6"
   val guava                   = "com.google.guava"                  %  "guava"                         % v.guava % Compile
   val avro                    = "org.apache.avro"                   %  "avro"                          % "1.9.0"
+  val kafka                   = "org.apache.kafka"                  %% "kafka"                         % v.kafka
   // cats
   val catsCore                = "org.typelevel"                     %% "cats-core"                     % v.cats
   // jackson
