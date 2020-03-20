@@ -1,9 +1,9 @@
 import sbt._
 
 object v {
-  val spark     = "2.4.3"
+  val spark     = "2.4.5"
   val hadoop    = "2.8.5"
-  val zio       = "1.0.0-RC10-1"
+  val zio       = "1.0.0-RC18-2"
   val cats      = "2.0.0-M1"
   val guava     = "27.1-jre"
   val jackson   = "2.9.9"
