@@ -1,7 +1,7 @@
 import compiler._
 import deps._
 
-ThisBuild / scalaVersion := "2.12.9"
+ThisBuild / scalaVersion := "2.12.11"
 ThisBuild / version := "0.1"
 ThisBuild / turbo := true
 ThisBuild / scalacOptions := CompilerOpts.scalacFlags
