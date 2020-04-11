@@ -5,6 +5,7 @@ ThisBuild / scalaVersion := "2.12.11"
 ThisBuild / version := "0.1"
 ThisBuild / turbo := true
 ThisBuild / scalacOptions := CompilerOpts.scalacFlags
+ThisBuild / scalafmtConfig := baseDirectory.value / "project" / ".scalafmt.conf"
 
 lazy val root = project
   .in(file("."))
@@ -29,8 +30,8 @@ lazy val core = project
         avro,
         zio
       ) ++
-      spark ++
-      jackson
+        spark ++
+        jackson
   )
 
 // Collection of external functionality,
@@ -46,7 +47,7 @@ lazy val kit = project
         typesafeConfig,
         zio
       ) ++
-      consul
+        consul
   )
 
 // Data processing api.
@@ -59,7 +60,7 @@ lazy val processing = project
       Seq(
         loggingFacade
       ) ++
-      cats
+        cats
   )
 
 // Spark batch processing application
@@ -73,8 +74,8 @@ lazy val batch = project
         typesafeConfig,
         zio
       ) ++
-      spark ++
-      loggingFacility
+        spark ++
+        loggingFacility
   )
 
 // Spark Streaming processing application
@@ -86,4 +87,3 @@ lazy val streaming = project
     libraryDependencies ++=
       loggingFacility
   )
-
