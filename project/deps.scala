@@ -11,6 +11,8 @@ object v {
 }
 
 object deps {
+  // data platform deps
+  val api                     = "net.gemelen"                       %  "data-processing-api"           % "0.1"
   // Spark
   val yarn                    = "org.apache.spark"                  %% "spark-yarn"                    % v.spark force()
   val sql                     = "org.apache.spark"                  %% "spark-sql"                     % v.spark force()

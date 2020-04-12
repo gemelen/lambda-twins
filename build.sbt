@@ -6,13 +6,13 @@ ThisBuild / version := "0.1"
 ThisBuild / turbo := true
 ThisBuild / scalacOptions := CompilerOpts.scalacFlags
 ThisBuild / scalafmtConfig := baseDirectory.value / "project" / ".scalafmt.conf"
+ThisBuild / resolvers += Resolver.bintrayRepo("gemelen", "data-platform")
 
 lazy val root = project
   .in(file("."))
   .enablePlugins(RootProjectPlugin)
   .aggregate(
     kit,
-    processing,
     core,
     batch,
     streaming
@@ -21,12 +21,12 @@ lazy val root = project
 lazy val core = project
   .in(file("core"))
   .dependsOn(kit)
-  .dependsOn(processing)
   .settings(
     name := "core",
     scalacOptions -= "-Ywarn-dead-code",
     libraryDependencies ++=
       Seq(
+        api,
         avro,
         zio
       ) ++
@@ -48,19 +48,6 @@ lazy val kit = project
         zio
       ) ++
         consul
-  )
-
-// Data processing api.
-// Externalize into separate lib in a real project.
-lazy val processing = project
-  .in(file("processing"))
-  .settings(
-    name := "processing",
-    libraryDependencies ++=
-      Seq(
-        loggingFacade
-      ) ++
-        cats
   )
 
 // Spark batch processing application
