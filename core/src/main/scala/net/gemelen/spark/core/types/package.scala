@@ -1,9 +1,25 @@
 package net.gemelen.spark.core.types
 
+import net.gemelen.data.processing.api.parsing.ParsingError
+import net.gemelen.data.processing.api.validation.ValidationError
+import net.gemelen.data.processing.api.enrichment.EnrichmentError
+
+sealed abstract class ProcessingError
+
+object ProcessingError {
+
+  final case class Parsing(origin: ParsingError)       extends ProcessingError
+  final case class Validation(origin: ValidationError) extends ProcessingError
+  final case class Enrichment(origin: EnrichmentError) extends ProcessingError
+
+  def apply(error: ParsingError)    = Parsing(error)
+  def apply(error: ValidationError) = Validation(error)
+  def apply(error: EnrichmentError) = Enrichment(error)
+}
+
 object Types {
 
   import org.apache.avro.generic.GenericRecord
-  import net.gemelen.data.processing.api.errors.ProcessingError
 
   type Grain = Either[ProcessingError, GenericRecord]
 
@@ -30,4 +46,3 @@ package dataset {
     type Batch = Dataset[Grain]
   }
 }
-
